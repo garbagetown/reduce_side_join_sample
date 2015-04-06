@@ -1,6 +1,5 @@
 package garbagetown;
 
-import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.io.WritableUtils;
 
@@ -15,6 +14,9 @@ public class CompositeKey implements WritableComparable<CompositeKey> {
 
     private String key;
     private int index;
+
+    public CompositeKey() {
+    }
 
     public CompositeKey(String key, int index) {
         this.key = key;

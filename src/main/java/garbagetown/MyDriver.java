@@ -3,7 +3,6 @@ package garbagetown;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -23,6 +22,14 @@ public class MyDriver extends Configured implements Tool {
 
     private static Logger logger = LogManager.getLogger(MyDriver.class);
 
+    public static final String NAME_E = "part-e";
+    public static final String NAME_SC = "part-sc";
+    public static final String NAME_SH = "part-sh";
+
+    public static final int INDEX_E = 1;
+    public static final int INDEX_SC = 2;
+    public static final int INDEX_SH = 3;
+
     @Override
     public int run(String[] args) throws Exception {
 
@@ -37,15 +44,15 @@ public class MyDriver extends Configured implements Tool {
 
         job.addCacheFile(new URI("input/department.txt"));
 
-        conf.setInt("part-e", 1);// Set Employee file to 1
-        conf.setInt("part-sc", 2);// Set Current salary file to 2
-        conf.setInt("part-sh", 3);// Set Historical salary file to 3
+        conf.setInt(NAME_E, INDEX_E); // Set Employee file to 1
+        conf.setInt(NAME_SC, INDEX_SC); // Set Current salary file to 2
+        conf.setInt(NAME_SH, INDEX_SH); // Set Historical salary file to 3
 
         FileInputFormat.setInputPaths(job, new Path(args[0]), new Path(args[1]));
         FileOutputFormat.setOutputPath(job, new Path(args[2]));
 
         job.setMapperClass(MyMapper.class);
-        job.setMapOutputKeyClass(LongWritable.class);
+        job.setMapOutputKeyClass(CompositeKey.class);
         job.setMapOutputValueClass(Text.class);
 
         job.setNumReduceTasks(4);
