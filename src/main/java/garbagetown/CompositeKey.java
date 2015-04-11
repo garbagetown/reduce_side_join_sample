@@ -46,7 +46,7 @@ public class CompositeKey implements WritableComparable<CompositeKey> {
 
     @Override
     public String toString() {
-        return String.format("%s\t%s", key, index);
+        return String.format("%s:%s", key, index);
     }
 
     public String getKey() {

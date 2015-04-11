@@ -55,7 +55,11 @@ public class MyDriver extends Configured implements Tool {
         job.setMapOutputKeyClass(CompositeKey.class);
         job.setMapOutputValueClass(Text.class);
 
-        job.setNumReduceTasks(4);
+        job.setPartitionerClass(MyPartitioner.class);
+        job.setSortComparatorClass(SortComparator.class);
+        job.setGroupingComparatorClass(GroupingComparator.class);
+
+        job.setNumReduceTasks(2);
         job.setReducerClass(MyReducer.class);
         job.setOutputKeyClass(NullWritable.class);
         job.setOutputValueClass(Text.class);

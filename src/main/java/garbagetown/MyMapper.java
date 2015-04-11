@@ -32,11 +32,6 @@ public class MyMapper extends Mapper<LongWritable, Text, CompositeKey, Text> {
         FileSplit fileSplit = (FileSplit) context.getInputSplit();
         String name = fileSplit.getPath().getName();
 
-        logger.info("==============================");
-        logger.info(name);
-        logger.info(context.getConfiguration().get(name));
-        logger.info("==============================");
-
         index = Integer.parseInt(context.getConfiguration().get(name));
         if (index == MyDriver.INDEX_E) {
             attributeIndexes.add(2); // FName
@@ -59,15 +54,11 @@ public class MyMapper extends Mapper<LongWritable, Text, CompositeKey, Text> {
 
         String[] tokens = value.toString().split(",");
 
-        logger.info("==============================");
-        logger.info(index);
-        logger.info(Arrays.asList(tokens));
-        logger.info("==============================");
-
         compositeKey.setKey(tokens[0]);
         compositeKey.setIndex(index);
 
         mapValue.clear();
+        mapValues.clear();
         for (Integer index : attributeIndexes) {
             mapValues.add(tokens[index]);
         }
